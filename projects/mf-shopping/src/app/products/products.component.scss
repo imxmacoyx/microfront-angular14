@@ -1,0 +1,9 @@
+.app {
+  border: 5px dashed rgb(252, 98, 98);
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(395px, 1fr));
+  row-gap: 1em;
+  padding: 1em;
+}

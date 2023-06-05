@@ -1,27 +1,100 @@
-# MicrofrontAngular14
+# Demo de Microfront Monorepo con Module Federate
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.11.
+Proyecto generado con [Angular CLI](https://github.com/angular/angular-cli) version 14.2.11.
 
-## Development server
+# Ejecutar proyecto
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Debes estar en la raíz del proyecto `microfront-angular14`
 
-## Code scaffolding
+```
+npm i
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+npm run all
+```
 
-## Build
+# Estructura del proyecto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- projects
+  - commons-lib (library-compartida)
+  - mf-payment (application-remote)
+  - mf-shell (application-host)
+  - mf-shopping (application-remote)
+- package.json
+- README.md
+- ...
 
-## Running unit tests
+## commons-lib
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Este proyecto es de tipo librería, es el elemento que usamos para compartir elementos entre los microfrontend
 
-## Running end-to-end tests
+Fue generado con el comando:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```
+ng generate library commons-lib
+```
 
-## Further help
+## mf-payment
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Este proyecto es de tipo aplicación y configurada como remote en Webpack, se encarga de mostrar los Productos agregados del carrito, que estan guardados en el localStorage con key `products`
+
+Fue generado con el comando:
+
+```
+ng generate application mf-payment --style=scss
+```
+
+Y configurado como `remote` con el comando:
+
+```
+ng add @angular-architects/module-federation --project mf-payment --port 4202 --type remote
+```
+
+Cabe mencionar que este es de tipo [standalone](https://angular.io/guide/standalone-components) y tambien se puede configurar como `remote` para Webpack ya que lo considera un módulo.
+
+## mf-shopping
+
+Este proyecto es de tipo aplicación y configurada como remite en Webpack, se encarga de cargar una lista de Productos y utilizar la libreria **commons-lib** para enviar la información al LocalStorage y emitir la actualización de la cantidad del carrito.
+
+Fue generado con el comando:
+
+```
+ng generate application mf-shopping --style=scss --routing=true
+```
+
+Y configurado como `remote` con el comando:
+
+```
+ng add @angular-architects/module-federation --project mf-shopping --port 4201 --type remote
+```
+
+## mf-shell
+
+Este proyecto es de tipo aplicación y configurada como host en Webpack, se encarga de `embeber` los otros microfronteds de tipo `remote`. Este es el proyecto que correra como principal.
+
+Fue generado con el comando:
+
+```
+ng generate application mf-shell --style=scss --routing=true
+```
+
+Y configurado como `host` con el comando:
+
+```
+ng add @angular-architects/module-federation --project mf-shell --port 4200 --type host
+```
+
+# Microfront
+
+Los [microfront](https://www.angulararchitects.io/en/aktuelles/the-microfrontend-revolution-module-federation-in-webpack-5/) viene de la idea de los microservicios del backend y se busca tener los mismos beneficios en el front, esto se puede lograr utilizando una funcionalidad de WebPack en su versión 5 llamada [module federation](https://webpack.js.org/concepts/module-federation/)
+
+Angular integra WebPack 5 a partir de su versión 12 y el equipo de Angular Architects crearon un paquete de node para configurar los microfront de una forma "sencilla"
+
+```
+npm i @angular-architects/module-federation
+```
+
+Para ver el [repositorio, dale click aquí](https://www.npmjs.com/package/@angular-architects/module-federation?activeTab=readme)
+
+![Estructura microfront-monorepo](/images/monorepo-microfront.png)
