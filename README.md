@@ -85,6 +85,14 @@ Y configurado como `host` con el comando:
 ng add @angular-architects/module-federation --project mf-shell --port 4200 --type host
 ```
 
+## Workspace
+
+Para crear el monorepo es necesario crear el espacio de trabajo
+
+```
+ng new microfront-angular14 --create-application=false
+```
+
 # Microfront
 
 Los [microfront](https://www.angulararchitects.io/en/aktuelles/the-microfrontend-revolution-module-federation-in-webpack-5/) viene de la idea de los microservicios del backend y se busca tener los mismos beneficios en el front, esto se puede lograr utilizando una funcionalidad de WebPack en su versión 5 llamada [module federation](https://webpack.js.org/concepts/module-federation/)
