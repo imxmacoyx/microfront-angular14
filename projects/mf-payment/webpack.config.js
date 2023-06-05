@@ -3,7 +3,7 @@ const {
   withModuleFederationPlugin,
 } = require("@angular-architects/module-federation/webpack");
 
-module.exports = withModuleFederationPlugin({
+const moduleFederationConfig = withModuleFederationPlugin({
   name: "mfPayment",
 
   exposes: {
@@ -20,3 +20,7 @@ module.exports = withModuleFederationPlugin({
   },
   sharedMappings: ["@commons-lib"],
 });
+
+moduleFederationConfig.output.publicPath = "http://localhost:4202/";
+
+module.exports = moduleFederationConfig;
